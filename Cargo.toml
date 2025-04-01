@@ -1,0 +1,10 @@
+[workspace]
+members = [
+  "backend/auth",
+  "backend/governance",
+  "backend/loans",
+  "backend/wallet"
+]
+
+[profile.release]
+opt-level = 3

@@ -2,12 +2,12 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { AuthClient } from "@dfinity/auth-client";
 import { HttpAgent, Actor } from "@dfinity/agent";
 import { toast } from "@/hooks/use-toast";
-import { idlFactory as authIdl } from "../declarations/auth";
-import { idlFactory as governanceIdl } from "../declarations/governance";
-import { idlFactory as loansIdl } from "../declarations/loans";
-import { idlFactory as walletIdl } from "../declarations/wallet";
-import type { AuthService, User } from "../declarations/auth/auth.types";
-import type { GovernanceService } from "../declarations/governance/governance.types";
+import { idlFactory as authIdl } from "@/declarations/auth/auth.did";
+import { idlFactory as governanceIdl } from "@/declarations/governance/governance.did";
+import { idlFactory as loansIdl } from "@/declarations/loans/loans.did";
+import { idlFactory as walletIdl } from "@/declarations/wallet/wallet.did";
+import type { AuthService, User } from "@/declarations/auth/auth.types";
+import type { GovernanceService } from "@/declarations/governance/governance.types.ts";
 import type {
   LoansService,
   LoanApplication,
