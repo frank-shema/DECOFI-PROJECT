@@ -2,23 +2,27 @@
   "canisters": {
     "auth": {
       "main": "backend/auth/main.rs",
-      "type": "rust"
+      "type": "rust",
+      "candid": "backend/auth/auth.did",
+      "package": "auth"
     },
     "governance": {
       "main": "backend/governance/main.rs",
-      "type": "rust"
+      "type": "rust",
+      "candid": "backend/governance/governance.did",
+      "package": "governance"
     },
     "loans": {
       "main": "backend/loans/main.rs",
-      "type": "rust"
+      "type": "rust",
+      "candid": "backend/loans/loans.did",
+      "package": "loans"
     },
     "wallet": {
       "main": "backend/wallet/main.rs",
-      "type": "rust"
-    },
-    "transactions": {
-      "main": "backend/transactions/main.rs",
-      "type": "rust"
+      "type": "rust",
+      "candid": "backend/wallet/wallet.did",
+      "package": "wallet"
     }
   },
   "defaults": {
