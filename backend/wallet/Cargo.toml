@@ -1,4 +1,11 @@
 [package]
-name = "transactions"
+name = "wallet"
 version = "0.1.0"
 edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]  # Required for WebAssembly output, which ICP uses
+
+[dependencies]
+candid = "0.9"  # For Candid interface serialization
+ic-cdk = "0.11"  # ICP canister development kit
