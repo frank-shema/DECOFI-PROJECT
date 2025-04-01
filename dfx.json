@@ -15,6 +15,10 @@
     "wallet": {
       "main": "backend/wallet/main.rs",
       "type": "rust"
+    },
+    "transactions": {
+      "main": "backend/transactions/main.rs",
+      "type": "rust"
     }
   },
   "defaults": {
