@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "auth": {
+      "main": "backend/auth/main.rs",
+      "type": "rust"
+    },
+    "governance": {
+      "main": "backend/governance/main.rs",
+      "type": "rust"
+    },
+    "loans": {
+      "main": "backend/loans/main.rs",
+      "type": "rust"
+    },
+    "wallet": {
+      "main": "backend/wallet/main.rs",
+      "type": "rust"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": "cargo"
+    }
+  },
+  "version": 1
+}
