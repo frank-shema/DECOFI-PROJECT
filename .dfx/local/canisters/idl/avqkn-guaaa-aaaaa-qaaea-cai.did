@@ -1,0 +1,34 @@
+type TxType = variant {
+  deposit;
+  withdrawal;
+  transfer;
+  interest;
+  reward;
+  loanPayment;
+};
+
+type TxStatus = variant {
+  pending;
+  completed;
+  failed;
+};
+
+type TxRecord = record {
+  id: text;
+  amount: float64;
+  fromPrincipal: principal;
+  toPrincipal: opt principal;
+  timestamp: nat64;
+  txType: TxType;
+  status: TxStatus;
+  description: opt text;
+};
+
+service : {
+  getBalance: () -> (float64) query;
+  deposit: (float64) -> (TxRecord);
+  withdraw: (float64) -> (TxRecord);
+  transfer: (principal, float64) -> (TxRecord);
+  getTransactions: () -> (vec TxRecord) query;
+  calculateInterest: () -> ();
+}
