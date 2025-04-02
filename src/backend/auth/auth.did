@@ -1,0 +1,15 @@
+
+type User = record {
+  principal : principal;
+  username : text;
+  email : text;
+  created_at : nat64;
+  roles : vec text;
+};
+
+service : {
+  login : (text) -> (bool);
+  logout : () -> (bool);
+  is_authenticated : () -> (bool) query;
+  get_user_info : () -> (User) query;
+}

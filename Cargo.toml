@@ -1,0 +1,11 @@
+
+[workspace]
+members = [
+  "src/backend/auth",
+  "src/backend/wallet",
+  "src/backend/loans",
+  "src/backend/governance"
+]
+
+# Set resolver to version 2 as recommended for edition 2021
+resolver = "2"

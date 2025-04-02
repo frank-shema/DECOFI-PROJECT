@@ -1,0 +1,50 @@
+
+{
+  "canisters": {
+    "auth": {
+      "candid": "src/backend/auth/auth.did",
+      "type": "rust",
+      "package": "auth"
+    },
+    "wallet": {
+      "candid": "src/backend/wallet/wallet.did",
+      "type": "rust",
+      "package": "wallet"
+    },
+    "loans": {
+      "candid": "src/backend/loans/loans.did",
+      "type": "rust",
+      "package": "loans"
+    },
+    "governance": {
+      "candid": "src/backend/governance/governance.did",
+      "type": "rust",
+      "package": "governance"
+    },
+    "frontend": {
+      "dependencies": [
+        "auth",
+        "wallet",
+        "loans",
+        "governance"
+      ],
+      "frontend": {
+        "entrypoint": "index.html"
+      },
+      "source": [
+        "src/",
+        "public/",
+        "index.html"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
