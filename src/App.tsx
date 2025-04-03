@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import DashboardLayout from "@/components/DashboardLayout";
 
 // Pages
 import Index from "./pages/Index";
@@ -38,62 +38,43 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/help" element={<HelpSupportPage />} />
-            
-            {/* Protected routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/deposit-withdraw" element={
-              <ProtectedRoute>
-                <DepositWithdrawPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/loans" element={
-              <ProtectedRoute>
-                <LoansPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/governance" element={
-              <ProtectedRoute>
-                <GovernancePage />
-              </ProtectedRoute>
-            } />
-            <Route path="/transactions" element={
-              <ProtectedRoute>
-                <TransactionsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/rewards" element={
-              <ProtectedRoute>
-                <RewardsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/features/savings" element={
-              <ProtectedRoute>
-                <SavingsPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/cooperatives" element={
-              <ProtectedRoute>
-                <CooperativesPage />
-              </ProtectedRoute>
-            } />
-            <Route path="/financial-advisor" element={
-              <ProtectedRoute>
-                <FinancialAdvisorPage />
-              </ProtectedRoute>
-            } />
-            
-            {/* Admin routes */}
-            <Route path="/admin" element={
-              <ProtectedRoute adminOnly={true}>
-                <AdminPage />
-              </ProtectedRoute>
-            } />
-            
+
+            {/* Protected routes with Dashboard Layout */}
+            <Route
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route
+                path="/deposit-withdraw"
+                element={<DepositWithdrawPage />}
+              />
+              <Route path="/loans" element={<LoansPage />} />
+              <Route path="/governance" element={<GovernancePage />} />
+              <Route path="/transactions" element={<TransactionsPage />} />
+              <Route path="/rewards" element={<RewardsPage />} />
+              <Route path="/features/savings" element={<SavingsPage />} />
+              <Route path="/cooperatives" element={<CooperativesPage />} />
+              <Route
+                path="/financial-advisor"
+                element={<FinancialAdvisorPage />}
+              />
+              <Route path="/help" element={<HelpSupportPage />} />
+
+              {/* Admin routes */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute adminOnly={true}>
+                    <AdminPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Route>
+
             {/* Catch-all route */}
             <Route path="*" element={<NotFound />} />
           </Routes>
