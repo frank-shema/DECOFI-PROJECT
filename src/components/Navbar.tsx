@@ -1,16 +1,31 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, ChevronDown, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import HowItWorksSection from "./HowItworks";
+import { useAuth } from "@/context/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, user, logout } = useAuth();
 
   const toggleDropdown = (name: string) => {
     setActiveDropdown(activeDropdown === name ? null : name);
+  };
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
   };
 
   const handleScroll = (id: string) => {
@@ -153,21 +168,59 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-9 px-4 rounded-md"
-              asChild
-            >
-              <Link to="/login">Sign In</Link>
-            </Button>
-            <Button
-              className="bg-decofi-blue hover:bg-decofi-blue/90 h-9 px-4 rounded-md"
-              size="sm"
-              asChild
-            >
-              <Link to="/register">Get Started</Link>
-            </Button>
+            {isAuthenticated ? (
+              <>
+                {user && (
+                  <div className="text-sm text-gray-600 dark:text-gray-400 mr-2">
+                    <span className="font-medium">ID: </span>
+                    <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-xs">
+                      {user.principal.substring(0, 10)}...
+                    </code>
+                  </div>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-9 px-4 rounded-md"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      Account
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                      Dashboard
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 px-4 rounded-md"
+                  asChild
+                >
+                  <Link to="/login">Sign In</Link>
+                </Button>
+                <Button
+                  className="bg-decofi-blue hover:bg-decofi-blue/90 h-9 px-4 rounded-md"
+                  size="sm"
+                  asChild
+                >
+                  <Link to="/register">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
           <div className="flex items-center md:hidden">
             <button
@@ -286,25 +339,62 @@ const Navbar = () => {
           <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-center justify-between px-4">
               <div className="space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 px-3 rounded-md"
-                  asChild
-                >
-                  <Link to="/login" onClick={() => setIsMenuOpen(false)}>
-                    Sign In
-                  </Link>
-                </Button>
-                <Button
-                  className="bg-decofi-blue hover:bg-decofi-blue/90 h-8 px-3 rounded-md"
-                  size="sm"
-                  asChild
-                >
-                  <Link to="/register" onClick={() => setIsMenuOpen(false)}>
-                    Get Started
-                  </Link>
-                </Button>
+                {isAuthenticated ? (
+                  <>
+                    {user && (
+                      <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        <span className="font-medium">ID: </span>
+                        <code className="bg-slate-200 dark:bg-slate-700 px-1 py-0.5 rounded text-xs">
+                          {user.principal.substring(0, 10)}...
+                        </code>
+                      </div>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 px-3 rounded-md"
+                      onClick={() => {
+                        navigate("/dashboard");
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Dashboard
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="h-8 px-3 rounded-md"
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-8 px-3 rounded-md"
+                      asChild
+                    >
+                      <Link to="/login" onClick={() => setIsMenuOpen(false)}>
+                        Sign In
+                      </Link>
+                    </Button>
+                    <Button
+                      className="bg-decofi-blue hover:bg-decofi-blue/90 h-8 px-3 rounded-md"
+                      size="sm"
+                      asChild
+                    >
+                      <Link to="/register" onClick={() => setIsMenuOpen(false)}>
+                        Get Started
+                      </Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Wallet,
@@ -15,6 +15,7 @@ import {
   X,
   LogOut,
   Settings,
+  UserCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
@@ -26,6 +27,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
 
 interface SidebarItemProps {
   icon: React.ElementType;
@@ -67,8 +69,10 @@ const SidebarItem = ({
 };
 
 export const Sidebar = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -95,6 +99,11 @@ export const Sidebar = () => {
 
   const handleLogout = async () => {
     await logout();
+    navigate("/login");
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
   };
 
   // Determine if the path matches the route or is a child route
@@ -108,6 +117,15 @@ export const Sidebar = () => {
   // Mobile sidebar toggle
   const toggleMobileSidebar = () => {
     setIsMobileOpen(!isMobileOpen);
+  };
+
+  // Display a shortened version of the principal ID
+  const formatPrincipal = (principal: string) => {
+    if (!principal) return "";
+    if (principal.length <= 16) return principal;
+    return `${principal.substring(0, 8)}...${principal.substring(
+      principal.length - 8
+    )}`;
   };
 
   return (
@@ -165,6 +183,35 @@ export const Sidebar = () => {
           </Button>
         </div>
 
+        {/* User Info */}
+        {user && (
+          <div
+            className={cn(
+              "py-2 px-3",
+              isCollapsed ? "items-center justify-center" : ""
+            )}
+          >
+            <div
+              className={cn(
+                "flex items-center gap-2 p-2 bg-slate-100 dark:bg-slate-700 rounded-md",
+                isCollapsed && "flex-col"
+              )}
+            >
+              <UserCircle className="h-6 w-6 text-decofi-blue" />
+              {!isCollapsed && (
+                <div className="flex flex-col overflow-hidden">
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+                    Internet Identity
+                  </span>
+                  <span className="text-xs truncate text-slate-500 dark:text-slate-400">
+                    {user ? formatPrincipal(user.principal) : "Unknown"}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         <div className="flex-1 overflow-auto py-4 px-3">
           <nav className="space-y-1">
             {navItems.map((item) => (
@@ -218,6 +265,23 @@ export const Sidebar = () => {
             <X className="h-4 w-4" />
           </Button>
         </div>
+
+        {/* User Info for Mobile */}
+        {user && (
+          <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-slate-700 rounded-md">
+              <UserCircle className="h-6 w-6 text-decofi-blue" />
+              <div className="flex flex-col overflow-hidden">
+                <span className="text-xs font-medium text-slate-600 dark:text-slate-300">
+                  Internet Identity
+                </span>
+                <span className="text-xs truncate text-slate-500 dark:text-slate-400">
+                  {user ? formatPrincipal(user.principal) : "Unknown"}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="flex-1 overflow-auto py-4 px-3">
           <nav className="space-y-1">

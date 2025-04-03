@@ -1,23 +1,36 @@
-
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { Spinner } from '@/components/ui/spinner';
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { Spinner } from "@/components/ui/spinner";
+import { useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
   adminOnly?: boolean;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ 
-  children, 
-  adminOnly = false 
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
+  children,
+  adminOnly = false,
 }) => {
   const { isAuthenticated, isLoading, isInitializing, user } = useAuth();
   const location = useLocation();
+  const { toast } = useToast();
 
   // Check if user has admin role
-  const isAdmin = user?.roles.includes('admin') || false;
-  
+  const isAdmin = user?.roles.includes("admin") || false;
+
+  // Show notification if redirected due to auth
+  useEffect(() => {
+    if (!isLoading && !isInitializing && !isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please sign in to access this page",
+        variant: "destructive",
+      });
+    }
+  }, [isLoading, isInitializing, isAuthenticated, toast]);
+
   if (isInitializing || isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -28,7 +41,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!isAuthenticated) {
-    // Redirect to the login page, but save the current location so we can 
+    // Redirect to the login page, but save the current location so we can
     // redirect back after successful login
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
