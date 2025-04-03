@@ -22,6 +22,8 @@ import HelpSupportPage from "./pages/HelpSupportPage";
 import SavingsPage from "./pages/SavingsPage";
 import CooperativesPage from "./pages/CooperativesPage";
 import FinancialAdvisorPage from "./pages/FinancialAdvisorPage";
+import SettingsPage from "./pages/SettingsPage";
+import AIAssistantPage from "./pages/AIAssistantPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -63,6 +65,8 @@ const App = () => (
                 element={<FinancialAdvisorPage />}
               />
               <Route path="/help" element={<HelpSupportPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/ai-assistant" element={<AIAssistantPage />} />
 
               {/* Admin routes */}
               <Route

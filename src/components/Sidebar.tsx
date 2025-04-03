@@ -16,6 +16,7 @@ import {
   LogOut,
   Settings,
   UserCircle,
+  Bot,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/context/AuthContext";
@@ -90,6 +91,7 @@ export const Sidebar = () => {
       label: "Financial Advisor",
       to: "/financial-advisor",
     },
+    { icon: Bot, label: "AI Assistant", to: "/ai-assistant" },
     { icon: HelpCircle, label: "Help & Support", to: "/help" },
   ];
 
